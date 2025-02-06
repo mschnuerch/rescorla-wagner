@@ -1,15 +1,3 @@
-#
-# This is the server logic of a Shiny web application. You can run the
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
-#
-
-library(shiny)
-library(shinyjs)
-library(tidyverse)
 
 do_plot <- function (values) {
   
@@ -47,7 +35,7 @@ do_plot <- function (values) {
 }
 
 
-# Define server logic required to draw a histogram
+# Define server logic
 function(input, output, session) {
   
   useShinyjs()
@@ -72,7 +60,7 @@ function(input, output, session) {
   c1 <- eventReactive(input$trial, input$c1)
   c2 <- eventReactive(input$trial, input$c2)
   c3 <- eventReactive(input$trial, input$c3)
-
+  
   learn <- eventReactive(input$trial, {
     
     n <- values$trials[length(values$trials)]
@@ -86,15 +74,15 @@ function(input, output, session) {
     V3 <- get_V3()
     V3_old <- V3[length(V3)]
     b <- get_b()
-
+    
     if (get_us()) {
       lambda <- 100
     } else {
       lambda <- 0
     }
-
+    
     V <- sum(c(V1_old, V2_old, V3_old)[c(c1(), c2(), c3())])
-
+    
     if (c1())
       V1_new <- V1_old + a1 * b * (lambda - V)
     else
@@ -107,7 +95,7 @@ function(input, output, session) {
       V3_new <- V3_old + a3 * b * (lambda - V)
     else
       V3_new <- V3_old
-
+    
     return (
       list(
         trials = 0:(n + 1),
@@ -116,18 +104,18 @@ function(input, output, session) {
         V3 = c(V3, V3_new)
       )
     )
-
+    
   })
-
-  # React to click on "Reset" button
+  
+  # React to click on "Lernen" button
   observe({
-
+    
     if (input$trial == 0){
-
+      
       return()
-
+      
     } else {
-
+      
       tmp <- learn()
       values$trials <- tmp$trials
       values$V1 <- tmp$V1
@@ -135,37 +123,33 @@ function(input, output, session) {
       values$V3 <- tmp$V3
     }
   })
-
-  # React to click on "Reset" button
+  
+  # React to click on "Zurücksetzen" button
   observe({
-
+    
     if(input$reset == 0){
-
+      
       return()
-
+      
     } else {
-
+      
       values$trials <- 0
       values$V1 <- 0
       values$V2 <- 0
       values$V3 <- 0
       reset("trial")
-
+      
     }
-
+    
   })
   
-
-# Render Output -----------------------------------------------------------
-
+  
+  # Render Output -----------------------------------------------------------
+  
   # Plot data
   output$distPlot <- renderPlot({
-    # tryCatch(
-    #   {do_plot(values)},
-    #   error = function(x) {""}
-    # )
     do_plot(values)
-    })
+  })
   
   output$type <- renderText({
     if (input$us)
@@ -173,9 +157,9 @@ function(input, output, session) {
     else
       "Extinktion"
   })
-
-
-
+  
+  
+  
   
   
   

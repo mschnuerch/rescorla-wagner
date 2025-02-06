@@ -1,17 +1,10 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    https://shiny.posit.co/
-#
 
 library(shiny)
 library(shinyWidgets)
 library(shinythemes)
+library(shinyjs)
+library(tidyverse)
 
-# Define UI for application that draws a histogram
 fluidPage(
   
   theme = shinytheme("lumen"),
@@ -21,7 +14,7 @@ fluidPage(
   # Application title
   titlePanel("Rescorla-Wagner-Simulator"),
   
-  # Sidebar with a slider input for number of bins
+  # Sidebar
   sidebarLayout(
     sidebarPanel(
       
@@ -69,8 +62,6 @@ fluidPage(
         )
       ),
       
-      # textOutput("type"),
-      
       hr(),
       
       fluidRow(
@@ -93,14 +84,10 @@ fluidPage(
         )
         
       )
-      
-      
-      
-      
-      
+
     ),
     
-    # Show a plot of the generated distribution
+    # Show information and results
     mainPanel(
       
       tabsetPanel(
@@ -220,9 +207,9 @@ fluidPage(
   p("Diese App wurde für Demonstrationszwecke in der Lehre entwickelt und",
     "kann für vergleichbare, nicht-kommerzielle Zwecke eingesetzt werden.",
     "Der Quellcode der App ist",
-    a("hier", href=""),
+    a("hier", href="https://github.com/mschnuerch/rescorla-wagner"),
     "verfügbar. Bitte richten Sie Fragen oder Kommentare zu dieser ShinyApp an",
     a("Martin Schnuerch.", href="mailto:martin.schnuerch@gmail.com"),
-    style = "font-size:15px; text-align:justify")
+    style = "font-size:10px; text-align:justify")
   
 )
